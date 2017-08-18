@@ -1,12 +1,18 @@
 import React from 'react';
 import Todo from '../../components/Todo';
 
-const TodoList = ({ cards}) => (
-
+const TodoList = ({ cards }) => (
   <ul>
-    {console.log("IM OVER HERE",cards)}
-      {cards.map(card => <Todo title={card.title} priority={card.priority} createdBy={card.createdBy} assignedTo={card.assignedTo} />)}
-
+    {
+      cards.map( ({ title, priority, createdBy, assignedTo }) =>
+        <Todo
+          title={title}
+          priority={priority}
+          createdBy={createdBy}
+          assignedTo={assignedTo}
+        />
+      )
+    }
   </ul>
 );
 

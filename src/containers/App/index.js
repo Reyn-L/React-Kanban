@@ -1,33 +1,34 @@
 import React, { Component } from 'react';
-import logo from '../../logo.svg';
 import './App.css';
 import {getCardFromFakeDB, addCardToFakeDB} from '../../db/index.js'
 import NewTodoForm from '../NewTodoForm';
 import TodoList from '../TodoList';
-import Title from '../../components/title'
-import TodoFilterInput from '../../components/TodoFilterInput';
+import Title from '../../components/title';
+import { connect } from 'react-redux';
+import { loadCards, addCard } from '../../actions';
 
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       title: "KANBAN",
       cards: []
     };
-    this.parentAddCard = this.parentAddCard.bind(this);
+    this.addCard = this.addCard.bind(this);
   }
 
-  parentAddCard(newCard) {
-    addCardToFakeDB(newCard)
-    .then(cards => {
-      this.setState({cards:cards});
-    });
+  addCard(newCard) {
+    this.props.addCard(newCard);
+    // addCardToFakeDB(newCard)
+    // .then(cards => {
+    //   this.setState({cards:cards});
+    // });
   }
 
   componentDidMount() {
-    getCardFromFakeDB().then(cardlist => {
-      this.setState({ cards: cardlist });
+    getCardFromFakeDB().then(cards => {
+      this.setState({ cards: cards });
     });
   }
 
@@ -37,10 +38,32 @@ class App extends Component {
         <Title title={this.state.title} />
         <p className="App-intro" />
         <TodoList cards={this.state.cards} />
-        <NewTodoForm childAddCard={this.parentAddCard} />
+        <NewTodoForm addCard={this.addCard} />
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    cards: state.cards
+  };
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    loadCards: () => {
+      dispatch(loadCards())
+    },
+    addCard: card => {
+      dispatch(addCard(card))
+    }
+  }
+}
+
+const ConnectedApp = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
+
+export default ConnectedApp;

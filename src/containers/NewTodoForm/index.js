@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux';
-
 
 class NewTodoForm extends Component {
   constructor(props) {
@@ -46,12 +44,7 @@ class NewTodoForm extends Component {
 
     handleSubmit( event ){
       event.preventDefault();
-      this.props.childAddCard({
-        title : this.state.title,
-        priority: this.state.priority,
-        createdBy: this.state.createdBy,
-        assignedTo: this.state.assignedTo
-      });
+      this.props.addCard(this.state);
       this.setState({
           title: '',
           priority:'',

@@ -63,3 +63,4 @@ export const addCardToFakeDB = (list) => new Promise((resolve, reject) => {
     resolve(listOfFakeDB);
   }, 500);
 });
+
